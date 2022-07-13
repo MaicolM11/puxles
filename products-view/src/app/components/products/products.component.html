@@ -1,1 +1,72 @@
-<p>products works!</p>
+
+<div class="card">
+
+    <p-toolbar>
+        <ng-template pTemplate="left">
+            <h3>Administrar productos</h3>
+        </ng-template>
+        
+        <ng-template pTemplate="right">
+            <button pButton label="Agregar" icon="pi pi-plus" class="p-button-success ml-auto" (click)="openNew()"></button>
+        </ng-template>
+    </p-toolbar>
+
+    <p-table  [value]="products" responsiveLayout="scroll" 
+            (sortFunction)="customSort($event)" [rowHover]="true" [customSort]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th pSortableColumn="precio">Precio <p-sortIcon field="precio"></p-sortIcon></th>
+                <th pSortableColumn="stock">Stock <p-sortIcon field="stock"></p-sortIcon></th>
+                <th>Opciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+            <tr>
+                <td>{{product.nombre}}</td>
+                <td>{{product.precio | currency:'COP'}}</td>
+                <td>{{product.stock}}</td>
+                <td>
+                    <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-text" (click)="openEdit(product)"></button>
+                    <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-text" (click)="deleteProduct(product)"></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog 
+    [(visible)]="productDialog" [style]="{width: '400px'}" 
+    header="Detalles del producto" 
+    [modal]="true" styleClass="p-fluid">
+
+    <ng-template pTemplate="content">
+
+        <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" pInputText id="nombre" [(ngModel)]="product.nombre" required autofocus />
+            <small class="p-error" *ngIf="submitted && !product.nombre">Nombre es requerido</small>
+        </div>
+        
+        <div class="field">
+            <label for="precio">Precio</label>
+            <p-inputNumber id="precio" [(ngModel)]="product.precio" mode="currency" currency="COP"></p-inputNumber>            
+            <small class="p-error" *ngIf="submitted && !product.precio">Precio es requerido</small>
+            <small class="p-error" *ngIf="submitted && product.precio < 0">El precio debe ser positivo</small>
+        </div>
+
+        <div class="field">
+            <label for="stock">Stock</label>
+            <p-inputNumber id="stock" [(ngModel)]="product.stock"></p-inputNumber>
+            <small class="p-error" *ngIf="submitted && !product.stock">stock es requerido</small>
+            <small class="p-error" *ngIf="submitted && product.stock < 0">El stock debe ser positivo</small>
+        </div> 
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+
+</p-dialog>

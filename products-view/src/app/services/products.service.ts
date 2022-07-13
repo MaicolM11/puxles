@@ -3,18 +3,19 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from '../models/Product';
 import { HttpClient } from '@angular/common/http';
+import { SERVER_URL } from '../config/config';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  url: string = 'https://localhost:8080/products';
+  url: string = SERVER_URL + '/products';
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(this.url);;
+    return this.http.get<Product[]>(this.url);
   }
 
   createProduct(product : Product): Observable<Product> {
