@@ -3,11 +3,15 @@ package com.puxles.product.api.models;
 import java.math.BigDecimal;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
 public class Product {
     
+    @Transient
+    public static final String SEQUENCE_NAME = "users_sequence";
+
     @Id
     private Integer id;
     private String nombre;

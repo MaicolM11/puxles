@@ -18,6 +18,7 @@ import javax.validation.Valid;
 
 import com.puxles.product.api.models.Product;
 import com.puxles.product.api.services.ProductService;
+import com.puxles.product.api.services.SequenceGeneratorService;
 
 @RestController
 @RequestMapping("/products")
@@ -25,9 +26,11 @@ import com.puxles.product.api.services.ProductService;
 public class ProductController {
     
     private final ProductService productService;
+    private final SequenceGeneratorService sequenceService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, SequenceGeneratorService generatorService) {
         this.productService = productService;
+        this.sequenceService = generatorService;
     }
 
     @GetMapping
@@ -45,6 +48,7 @@ public class ProductController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProduct(@Valid @RequestBody Product product) {
+        product.setId(sequenceService.generateSequence(Product.SEQUENCE_NAME));
         return productService.createProduct(product);
     }
 
