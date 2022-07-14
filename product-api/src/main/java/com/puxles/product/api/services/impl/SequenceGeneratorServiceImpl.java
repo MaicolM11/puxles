@@ -32,7 +32,7 @@ public class SequenceGeneratorServiceImpl implements SequenceGeneratorService {
                     options().returnNew(true).upsert(true),
                     DatabaseSequence.class
                 );
-        return !Objects.isNull(counter) ? (int)counter.getSeq() : 1;
+        return !Objects.isNull(counter) ? counter.getSeq() : 1;
     }
     
 }
